@@ -1,0 +1,238 @@
+    <!DOCTYPE HTML>
+
+    <html>
+        <head>
+            <title>Zixia</title>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="stylesheet" href="assets/css/main.css" />
+<!--            <style>body{background: #F7FAFC;background: #000; }</style>-->
+        </head>
+        <body class="homepage" >
+                <canvas id="canvas"></canvas>
+	            <script>
+                    //define how many points and other basic parameters
+                    var WIDTH = window.innerWidth, HEIGHT = window.innerHeight, POINT = 30;
+
+                    var canvas = document.getElementById('canvas');
+                    canvas.width = WIDTH,
+                    canvas.height = HEIGHT;
+                    var context = canvas.getContext('2d');
+                    context.strokeStyle = 'rgba(20,110,330,0.2)',
+                    context.strokeWidth = 2,
+                    context.fillStyle = 'rgba(20,110,330,0.4)';
+                    var circleArr = [];
+
+                    function Line (x, y, _x, _y, o) {
+                        this.beginX = x,
+                        this.beginY = y,
+                        this.closeX = _x,
+                        this.closeY = _y,
+                        this.o = o;
+                    }
+                    function Circle (x, y, r, moveX, moveY) {
+                        this.x = x,
+                        this.y = y,
+                        this.r = r,
+                        this.moveX = moveX,
+                        this.moveY = moveY;
+                    }
+                    //generate random numbers
+                    function num (max, _min) {
+                        var min = arguments[1] || 0;
+                        return Math.floor(Math.random()*(max-min+1)+min);
+                    }
+                    // draw circles
+                    function drawCricle (cxt, x, y, r, moveX, moveY) {
+                        var circle = new Circle(x, y, r, moveX, moveY)
+                        cxt.beginPath()
+                        cxt.arc(circle.x, circle.y, circle.r, 0, 2*Math.PI)
+                        cxt.lineWidth=1;
+                        cxt.lineStyle="#ffff00";
+                        cxt.font=""+ circle.r + "px sans-serif";
+                        cxt.fillText("", circle.x, circle.y);
+
+                        cxt.closePath();
+                        cxt.fill();
+                        return circle;
+                    }
+                    // draw lines
+                    function drawLine (cxt, x, y, _x, _y, o) {
+                        var line = new Line(x, y, _x, _y, o)
+                        cxt.beginPath()
+                        cxt.strokeStyle = 'rgba(20,110,330,0.025)'
+                        cxt.moveTo(line.beginX, line.beginY)
+                        cxt.lineTo(line.closeX, line.closeY)
+                        cxt.closePath()
+                        cxt.stroke();
+
+                    }
+                    //initialization
+                    function init () {
+                        circleArr = [];
+                        for (var i = 0; i < POINT; i++) {
+                            circleArr.push(drawCricle(context, num(WIDTH), num(HEIGHT), num(15, 2), num(10, -10)/40, num(10, -10)/40));
+                        }
+                        draw();
+                    }
+
+                    //draw within a loop
+                    function draw () {
+                        context.clearRect(0,0,canvas.width, canvas.height);
+                        for (var i = 0; i < POINT; i++) {
+                            drawCricle(context, circleArr[i].x, circleArr[i].y, circleArr[i].r);
+                        }
+                        for (var i = 0; i < POINT; i++) {
+                            for (var j = 0; j < POINT; j++) {
+                                if (i + j < POINT) {
+                                    var A = Math.abs(circleArr[i+j].x - circleArr[i].x),
+                                        B = Math.abs(circleArr[i+j].y - circleArr[i].y);
+                                    var lineLength = Math.sqrt(A*A + B*B);
+                                    var C = 1/lineLength*7-0.009;
+                                    var lineOpacity = C > 0.03 ? 0.03 : C;
+                                    if (lineOpacity > 0) {
+                                        drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i+j].x, circleArr[i+j].y, lineOpacity);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    //call function
+                    window.onload = function () {
+                        init();
+                        setInterval(function () {
+                            for (var i = 0; i < POINT; i++) {
+                                var cir = circleArr[i];
+                                cir.x += cir.moveX;
+                                cir.y += cir.moveY;
+                                if (cir.x > WIDTH) cir.x = 0;
+                                else if (cir.x < 0) cir.x = WIDTH;
+                                if (cir.y > HEIGHT) cir.y = 0;
+                                else if (cir.y < 0) cir.y = HEIGHT;
+
+                            }
+                            draw();
+                        }, 16);
+                    }
+
+                </script>
+            <div id="page-wrapper">
+
+                <!-- Header -->
+                    <div id="header" style = "background-color: transparent;">
+
+                        <!-- Inner -->
+                            <div class="inner">
+                                <header>
+                                    <h1><a id="logo" value = "Refresh" onclick="history.go(0)">zixia wweng</a></h1>
+                                    <hr />
+                                    <p><!--[--> <!--]--></p>
+                                    <p><!--[-->Walking on water and developing software from a specification are easy if both are frozen.<!--]--></p>
+                                    <p><!--[--> <!--]--></p>
+                                    <p><!--[--> <!--]--></p>
+
+                                    <p><!--[-->--- E. Berard <!--]--></p>
+
+                                </header>
+                                <footer>
+                                    <audio id = "BGM" src="musics/reflections.mp3" type="audio/mpeg" >
+                                    <p>If you are reading this, it is because your browser does not support the audio element.     </p>
+<!--                                    <embed src="musics/reflections.mp3" width="180" height="90" loop="true" hidden="true" autostart="false"/>-->
+                                    </audio>
+<!--                                    <a href="#" class="button circled scrolly" onclick="playBGM()">Start</a>-->
+
+                                </footer>
+                            </div>
+
+                        <!-- Nav -->
+                            <nav id="nav">
+                                <ul>
+                                    <li><a href="#" value = "Refresh" onclick="history.go(0)">Home</a></li>
+                                    <li>
+                                        <a href="blog/ios_small_data_storage.html">Blog</a>
+<!--                                        <ul>-->
+<!--
+                                            <li><a href="blog/ios_small_data_storage.html">iOS Small Data Storage</a></li>
+                                            <li><a href="#">biubiubiu</a></li>
+                                            <li><a href="#">biubiubiu2</a></li>
+                                            <li>
+                                                <a href="#">And a submenu &hellip;</a>
+                                                <ul>
+                                                    <li><a href="#">Lorem ipsum dolor</a></li>
+                                                    <li><a href="#">Phasellus consequat</a></li>
+                                                    <li><a href="#">Magna phasellus</a></li>
+                                                    <li><a href="#">Etiam dolore nisl</a></li>
+                                                </ul>
+                                            </li>
+-->
+<!--                                            <li><a href="#">Veroeros feugiat</a></li>-->
+<!--                                        </ul>-->
+                                    </li>
+                                    <li><a href="https://sophons.herokuapp.com">Project</a>
+                                        <ul>
+                                        <li><a href="https://sophons.herokuapp.com">Microsoft Capstone Project</a></li>
+                                        </ul>
+                                    <li><a href="photo/photo.html">Photo</a>
+                                        <ul>
+                                        <li><a href="photo/photo.html">Japan</a></li>
+                                        <li><a href="photo/canada.html">Canada</a></li>
+                                        <li><a href="photo/usa.html">USA</a></li>
+                                        <li><a href="photo/wuhan.html">Wuhan</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="anime.html">Anime</a></li>
+                                    <li><a href="cn.html">中文</a></li>
+                                </ul>
+                            </nav>
+
+                    </div>
+                
+                    <!-- Banner -->
+				<section id="banner">
+					<header>
+						<h2><!--[-->Hi. This is Zixia's website.<!--]--></h2>
+						<p>
+							Hello My name is Zixia. I am a passionate Software Programmar and Right now I am pursuing a M.S Degree on Computer Science in UCLA. I earned my B.S degree on CS as well in UC Santa Barbara within 3 years and a half. My main interest is Machine Learning and Software Engineering. My LinkedIn: <a href="https://www.linkedin.com/in/zixia-weng/">ZixiaLinkedIn.</a> Github: <a href="https://github.com/ZixiaWeng">ZixiaGit.</a> Resume: <a href="https://drive.google.com/file/d/1pu4LJ13UHyytXEEqEDdLCqXmiDSd33BO/view?usp=sharing">ZixiaCV.</a>
+                            I am proficient in Python, Javascript, C++, and Swift. Familiar with Objective-C, Java, MySQL, Html^CSS, Node.js, etc. The school projects and industry internships grand me plenty of experience on Web development and iOS mobile development. Machine Learning models and Database experience are also my strengths from this year. I have taken part in Microsoft Capstone project in UCSB(<a href="https://capstone.cs.ucsb.edu/teams.html">Capstone</a>) and provided positive contribution including model construction and data embeddings generation on GCN(Graphic Convolutional Neural Networks) Machine Learning Research in ScAi under Guidence from Professor Wang (<a href="http://web.cs.ucla.edu/~weiwang/">Wei Wang</a>)
+                            In real life, I am a very approachable person. I love team work and treat collabrations seriously. Learning about creating and coding is the core of my thoughts and my life. I enjoy delving into matters and finding what I need to make better choices in academics and entertainment life. I also love designing and UI. In my spare time, I watch anime, programme, read, scrawl, listen to music, etc. This August, I reached the climax of the Mount Fuji(Fujiyama). Recently, I am interested in Cryptocurrency like ethereum. 					<!--]-->
+						</p>
+                        <br />
+                        <br />
+					</header>
+<!--                    Built on <strong>skel</strong> and released under the <a href="http://html5up.net/license">CCA</a> license.-->
+                    <ul class="menu">                       
+				        <li>&copy; 2017-2018, Zixia Weng. All rights reserved. v1.0.2</li>
+				    </ul>
+				</section>
+
+                <script>
+                    var flag = 1
+                    var vid = document.getElementById("BGM");
+                    function playBGM() {
+                                            if (flag == 1){
+                                                vid.play();
+                                                flag = 0;
+                                            }
+                                            else{
+                                                vid.pause();
+                                                flag = 1;
+                                            }
+                                        }
+                    document.body.onkeyup = function(e){
+                        if(e.keyCode == 32){
+                            playBGM();
+                        }
+                    }
+                </script>
+                <script src="assets/js/jquery.min.js"></script>
+                <script src="assets/js/jquery.dropotron.min.js"></script>
+    <!--			<script src="assets/js/jquery.scrolly.min.js"></scrsipt>-->
+    <!--			<script src="assets/js/jquery.onvisible.min.js"></script>-->
+                <script src="assets/js/skel.min.js"></script>
+                <script src="assets/js/util.js"></script>
+                <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+                <script src="assets/js/main.js"></script>
+
+        </body>
+    </html>
