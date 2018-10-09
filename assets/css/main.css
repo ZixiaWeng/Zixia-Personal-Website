@@ -2103,7 +2103,7 @@
 /*字体颜色啊*/
 	#header {
 		position: relative;
-        background-color: transparent;		
+/*        background-color: transparent;		*/
         background-size: cover;
 		background-position: center center;
 		background-attachment: fixed;
@@ -2176,7 +2176,6 @@
 	body.homepage #header {
 		height: 100vh;
 		min-height: 40em;
-
 	}
 
 		body.homepage #header h1 {
@@ -2205,7 +2204,8 @@
 			transition-delay: 0.5s;
 */
 		}
-
+        
+        
 	body.homepage.is-loading #header:after {
 		opacity: 1;
 	}
@@ -2344,8 +2344,18 @@
 		background: #fff;
 		text-align: center;
         font-size: 10px;
-		padding: 4.5em 9.0em 4.5em 9.0em;
+		padding: 4.5em 19.0em 4.5em 19.0em;
 		margin-bottom: 0;
+/*        width: 50%;*/
+
+	}
+    #article {
+		background: #fff;
+		text-align: center;
+        font-size: 10px;
+		padding: 4.5em 39.0em 4.5em 39.0em;
+		margin-bottom: 0;
+/*        width: 50%;*/
 
 	}
 
@@ -3015,6 +3025,7 @@
 
 			#banner {
 				padding: 3em 2em 3em 2em;
+                width: 50%;
 			}
 
 		/* Sidebar */
